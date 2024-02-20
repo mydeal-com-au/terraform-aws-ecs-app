@@ -1,6 +1,7 @@
 data "aws_region" "current" {}
 
 data "aws_lb_listener" "ecs" {
+  count = var.alb ? 1 : 0
   arn = var.alb_listener_https_arn
 }
 
