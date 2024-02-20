@@ -34,7 +34,7 @@ resource "aws_ecs_service" "default" {
   }
 
   dynamic "load_balancer" {
-    for_each = var.alb ? [aws_lb_target_group.green.arn] : []
+    for_each = var.alb ? [aws_lb_target_group.green[0].arn] : []
     content {
       target_group_arn = load_balancer.value
       container_name   = var.name
