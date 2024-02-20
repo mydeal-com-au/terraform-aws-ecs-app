@@ -4,7 +4,7 @@ resource "aws_lb_listener_rule" "green" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group[0].green.arn
+    target_group_arn = aws_lb_target_group.green[0].arn
   }
 
   dynamic "condition" {
@@ -64,7 +64,7 @@ resource "aws_lb_listener_rule" "blue" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group[0].blue.arn
+    target_group_arn = aws_lb_target_group.blue[0].arn
   }
 
   dynamic "condition" {
