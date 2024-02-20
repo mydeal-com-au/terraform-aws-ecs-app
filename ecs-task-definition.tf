@@ -59,6 +59,14 @@ resource "aws_ecs_task_definition" "default" {
     }
   }
 
+  dynamic "runtime_platform" {
+    for_each = var.launch_type == "FARGATE" ? [1] : []
+    content {
+      operating_system_family = var.operating_system_family
+      cpu_architecture        = var.cpu_architecture
+    }
+  }
+
   lifecycle {
     ignore_changes = [
       container_definitions
