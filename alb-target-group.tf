@@ -1,9 +1,10 @@
 resource "aws_lb_listener_rule" "green" {
+  count = var.alb ? 1 : 0
   listener_arn = var.alb_listener_https_arn
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.green.arn
+    target_group_arn = aws_lb_target_group[0].green.arn
   }
 
   dynamic "condition" {
@@ -58,11 +59,12 @@ resource "aws_lb_listener_rule" "green" {
 }
 
 resource "aws_lb_listener_rule" "blue" {
+  count = var.alb ? 1 : 0
   listener_arn = var.test_traffic_route_listener_arn
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.blue.arn
+    target_group_arn = aws_lb_target_group[0].blue.arn
   }
 
   dynamic "condition" {
@@ -93,7 +95,7 @@ resource "aws_lb_listener_rule" "blue" {
 }
 
 resource "aws_lb_listener_rule" "redirects" {
-  count        = length(compact(split(",", var.hostname_redirects)))
+  count        = count = var.alb ? length(compact(split(",", var.hostname_redirects))) : 0
   listener_arn = var.alb_listener_https_arn
 
   action {
@@ -115,7 +117,7 @@ resource "aws_lb_listener_rule" "redirects" {
 }
 
 resource "aws_lb_listener_rule" "path_redirects" {
-  count        = length(var.redirects)
+  count        = count = var.alb ? length(var.redirects) : 0
   listener_arn = var.alb_listener_https_arn
 
   action {
@@ -150,6 +152,7 @@ resource "random_string" "alb_prefix" {
 }
 
 resource "aws_lb_target_group" "green" {
+  count = var.alb ? 1 : 0
   name                 = var.compat_keep_target_group_naming ? "${var.cluster_name}-${var.name}-gr" : format("%s-gr-%s", substr("${var.cluster_name}-${replace(var.name, "_", "-")}", 0, 24), random_string.alb_prefix.result)
   port                 = var.port
   protocol             = var.protocol
@@ -180,6 +183,7 @@ resource "aws_lb_target_group" "green" {
 }
 
 resource "aws_lb_target_group" "blue" {
+  count = var.alb ? 1 : 0
   name                 = var.compat_keep_target_group_naming ? "${var.cluster_name}-${var.name}-bl" : format("%s-bl-%s", substr("${var.cluster_name}-${replace(var.name, "_", "-")}", 0, 24), random_string.alb_prefix.result)
   port                 = var.port
   protocol             = var.protocol
