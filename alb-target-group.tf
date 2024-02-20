@@ -95,7 +95,7 @@ resource "aws_lb_listener_rule" "blue" {
 }
 
 resource "aws_lb_listener_rule" "redirects" {
-  count        = count = var.alb ? length(compact(split(",", var.hostname_redirects))) : 0
+  count        = var.alb ? length(compact(split(",", var.hostname_redirects))) : 0
   listener_arn = var.alb_listener_https_arn
 
   action {
