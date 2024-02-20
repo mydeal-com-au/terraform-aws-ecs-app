@@ -1,11 +1,11 @@
 resource "aws_codedeploy_app" "ecs" {
-  count            = var.deployment_controller == "CODE_DEPLOY" ? 1 : 0
+  count            = var.alb && var.deployment_controller == "CODE_DEPLOY" ? 1 : 0
   compute_platform = "ECS"
   name             = "${var.cluster_name}-${var.name}"
 }
 
 resource "aws_codedeploy_deployment_group" "ecs" {
-  count                  = var.deployment_controller == "CODE_DEPLOY" ? 1 : 0
+  count                  = var.alb && var.deployment_controller == "CODE_DEPLOY" ? 1 : 0
   app_name               = aws_codedeploy_app.ecs[0].name
   deployment_config_name = var.codedeploy_deployment_config_name
   deployment_group_name  = "${var.cluster_name}-${var.name}"
@@ -50,11 +50,11 @@ resource "aws_codedeploy_deployment_group" "ecs" {
       }
 
       target_group {
-        name = aws_lb_target_group.blue.name
+        name = aws_lb_target_group.blue[0].name
       }
 
       target_group {
-        name = aws_lb_target_group.green.name
+        name = aws_lb_target_group.green[0].name
       }
     }
   }
