@@ -27,6 +27,16 @@ variable "cpu" {
   description = "Hard limit for CPU for the container"
 }
 
+variable "operating_system_family" {
+  default     = "LINUX"
+  description = "Operating system to use (Fargate only)"
+}
+
+variable "cpu_architecture" {
+  default     = "X86_64"
+  description = "CPU architecture - X86_64 or ARM64"
+}
+
 variable "paths" {
   default     = []
   description = "List of paths to use on listener rule (example: ['/*'])"
