@@ -1,5 +1,5 @@
 resource "aws_lb_listener_rule" "green_auth_oidc" {
-  count        = var.auth_oidc_enabled ? 1 : 0
+  count        = var.alb && var.auth_oidc_enabled ? 1 : 0
   listener_arn = var.alb_listener_https_arn
 
   action {
