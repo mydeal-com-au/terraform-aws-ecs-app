@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "min_healthy_tasks" {
       unit        = "Count"
 
       dimensions = {
-        LoadBalancer = join("/", slice(split("/", data.aws_lb_listener.ecs.load_balancer_arn), 1, 4))
+        LoadBalancer = join("/", slice(split("/", data.aws_lb_listener.ecs[0].load_balancer_arn), 1, 4))
         TargetGroup  = aws_lb_target_group.blue[0].arn_suffix
       }
     }
@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "min_healthy_tasks" {
       unit        = "Count"
 
       dimensions = {
-        LoadBalancer = join("/", slice(split("/", data.aws_lb_listener.ecs.load_balancer_arn), 1, 4))
+        LoadBalancer = join("/", slice(split("/", data.aws_lb_listener.ecs[0].load_balancer_arn), 1, 4))
         TargetGroup  = aws_lb_target_group.green[0].arn_suffix
       }
     }
