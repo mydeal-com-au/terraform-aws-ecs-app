@@ -239,6 +239,11 @@ variable "healthcheck_matcher" {
   description = "The HTTP codes to use when checking for a successful response from a target"
 }
 
+variable "alb" {
+  default     = true
+  description = "Whether an alb has been deployed for the associated cluster"
+}
+
 variable "alb_only" {
   default     = false
   description = "Whether to deploy only an alb and no cloudFront or not with the cluster"
