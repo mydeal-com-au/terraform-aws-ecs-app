@@ -117,7 +117,7 @@ resource "aws_lb_listener_rule" "redirects" {
 }
 
 resource "aws_lb_listener_rule" "path_redirects" {
-  count        = count = var.alb ? length(var.redirects) : 0
+  count        = var.alb ? length(var.redirects) : 0
   listener_arn = var.alb_listener_https_arn
 
   action {
