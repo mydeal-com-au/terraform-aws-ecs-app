@@ -33,10 +33,13 @@ resource "aws_ecs_service" "default" {
     }
   }
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.green.arn
-    container_name   = var.name
-    container_port   = var.container_port
+  dynamic "load_balancer" {
+    for_each = var.alb ? [aws_lb_target_group.green.arn] : []
+    content {
+      target_group_arn = load_balancer.value
+      container_name   = var.name
+      container_port   = var.container_port
+    }
   }
 
   deployment_controller {
