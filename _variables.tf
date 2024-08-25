@@ -377,9 +377,13 @@ variable "alarm_prefix" {
 }
 
 variable "efs_mapping" {
-  type        = map(string)
-  description = "A map of efs volume ids and paths to mount into the default task definition"
-  default     = {}
+  type = list(object({
+    file_system_id   = string
+    file_system_path = optional(string, "")
+    container_path   = string
+  }))
+description = "A map of efs volume ids and paths to mount into the default task definition"
+  default     = []
 }
 
 variable "ssm_variables" {
