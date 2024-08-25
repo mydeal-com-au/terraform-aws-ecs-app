@@ -99,7 +99,6 @@ variable "cluster_name" {
 
 variable "service_role_arn" {
   description = "Existing service role ARN created by ECS cluster module"
-  default     = null
 }
 
 variable "codedeploy_role_arn" {
@@ -109,7 +108,6 @@ variable "codedeploy_role_arn" {
 
 variable "task_role_arn" {
   description = "Existing task role ARN created by ECS cluster module"
-  default     = null
 }
 
 variable "service_health_check_grace_period_seconds" {
