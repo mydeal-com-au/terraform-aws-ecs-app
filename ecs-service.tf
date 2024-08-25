@@ -8,6 +8,7 @@ resource "aws_ecs_service" "default" {
   deployment_maximum_percent         = var.service_deployment_maximum_percent
   deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent
   enable_execute_command             = true
+  launch_type                        = length(var.ecs_service_capacity_provider_strategy) == 0 ? var.launch_type : null
 
   dynamic "network_configuration" {
     for_each = var.launch_type == "FARGATE" ? [var.subnets] : []
