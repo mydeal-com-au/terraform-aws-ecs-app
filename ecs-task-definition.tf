@@ -33,9 +33,9 @@ resource "aws_ecs_task_definition" "default" {
           awslogs-stream-prefix = "app"
         }
       }
-      mountPoints = length(var.efs_mapping) == 0 ? null : [{
-        sourceVolume  = "efs-${keys(var.efs_mapping)[0]}"
-        containerPath = values(var.efs_mapping)[0]
+      mountPoints = length(var.efs_mapping) == 0 ? null : [ for mapping in var.efs_mapping : {
+        sourceVolume  = "efs-${mapping.file_system_id}"
+        containerPath = mapping.container_path
       }]
       secrets     = [for k, v in var.ssm_variables : { name : k, valueFrom : v }]
       environment = [for k, v in var.static_variables : { name : k, value : v }]
@@ -44,7 +44,7 @@ resource "aws_ecs_task_definition" "default" {
   ])
 
   dynamic "volume" {
-    for_each = var.efs_mapping
+    for_each = { for mapping in var.efs_mapping : mapping.file_system_id => mapping }
 
     content {
       name = "efs-${volume.key}"
