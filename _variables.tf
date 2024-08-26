@@ -540,3 +540,8 @@ variable "task_role_policies" {
   description = "Custom policies to be added on the task role."
 }
 
+variable "include_ssm_agent" {
+  type        = bool
+  default     = false
+  description = "Include a sidecar for SSM agent (requires AmazonSSMManagedInstanceCore policy on task role)."
+}
