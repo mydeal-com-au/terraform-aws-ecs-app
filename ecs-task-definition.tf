@@ -44,13 +44,13 @@ resource "aws_ecs_task_definition" "default" {
   ])
 
   dynamic "volume" {
-    for_each = { for distinctMapping in distinct([ for mapping in var.efs_mapping : mapping.file_system_id ]): distinctMapping => distinctMapping }
+    for_each = { for mapping in var.efs_mapping : "${mapping.file_system_id}${mapping.file_system_path}" => mapping }
 
     content {
       name = "efs-${volume.key}"
 
       efs_volume_configuration {
-        file_system_id     = volume.key
+        file_system_id     = volume.value.file_system_id
         transit_encryption = "ENABLED"
         authorization_config {
           access_point_id = aws_efs_access_point.default[volume.key].id
