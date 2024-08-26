@@ -44,7 +44,7 @@ resource "aws_ecs_task_definition" "default" {
   ])
 
   dynamic "volume" {
-    for_each = { for mapping in var.efs_mapping : "${mapping.file_system_id}${mapping.file_system_path}" => mapping }
+    for_each = { for distinctMapping in distinct([ for mapping in var.efs_mapping : mapping.file_system_id ]): distinctMapping => distinctMapping }
 
     content {
       name = "efs-${volume.key}"
