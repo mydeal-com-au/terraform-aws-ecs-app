@@ -34,7 +34,7 @@ resource "aws_ecs_task_definition" "default" {
         }
       }
       mountPoints = length(var.efs_mapping) == 0 ? null : [ for mapping in var.efs_mapping : {
-        sourceVolume  = "efs-${mapping.file_system_id}"
+        sourceVolume  = "efs-${mapping.file_system_id}${replace(mapping.file_system_path, "/", "-")}"
         containerPath = mapping.container_path
       }]
       secrets     = [for k, v in var.ssm_variables : { name : k, valueFrom : v }]
@@ -44,7 +44,7 @@ resource "aws_ecs_task_definition" "default" {
   ])
 
   dynamic "volume" {
-    for_each = { for mapping in var.efs_mapping : "${mapping.file_system_id}${mapping.file_system_path}" => mapping }
+    for_each = { for mapping in var.efs_mapping : "${mapping.file_system_id}${replace(mapping.file_system_path, "/", "-")}" => mapping }
 
     content {
       name = "efs-${volume.key}"
