@@ -12,7 +12,7 @@ resource "aws_efs_access_point" "default" {
 }
 
 resource "aws_efs_access_point" "ssm-user-data" {
-  for_each       = var.ssm_file_system_id != "" ? [1] : []
+  count       = var.ssm_file_system_id != "" ? 1 : 0
   file_system_id = var.ssm_file_system_id
   root_directory {
     creation_info {
