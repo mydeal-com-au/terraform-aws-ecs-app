@@ -10,3 +10,16 @@ resource "aws_efs_access_point" "default" {
     path = "/${var.name}${each.value.file_system_path}"
   }
 }
+
+resource "aws_efs_access_point" "ssm-user-data" {
+  for_each       = var.ssm_file_system_id != "" ? [1] : []
+  file_system_id = var.ssm_file_system_id
+  root_directory {
+    creation_info {
+      owner_gid   = 0
+      owner_uid   = 0
+      permissions = 755
+    }
+    path = "/${var.name}/ssm-user-data"
+  }
+}
