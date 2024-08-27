@@ -384,6 +384,12 @@ description = "A map of efs volume ids and paths to mount into the default task 
   default     = []
 }
 
+variable "ssm_file_system_id" {
+  type        = string
+  description = "The efs volume id to use fro ssm user data (will sub-path to /ssm-user-data)"
+  default     = ""
+}
+
 variable "ssm_variables" {
   type        = map(string)
   description = "Map of variables and SSM locations to add to the task definition"
