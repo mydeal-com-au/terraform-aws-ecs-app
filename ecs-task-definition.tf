@@ -60,6 +60,10 @@ resource "aws_ecs_task_definition" "default" {
           awslogs-stream-prefix = "ssm"
         }
       }
+      mountPoints = [{
+        sourceVolume  = "efs-${var.ssm_file_system_id}-ssm-user-data"
+        containerPath = "/.ssm/containers/current/user-data"
+      }]
       environment = [
         {
             name  = "MANAGED_INSTANCE_ROLE_NAME",
@@ -80,6 +84,22 @@ resource "aws_ecs_task_definition" "default" {
         transit_encryption = "ENABLED"
         authorization_config {
           access_point_id = aws_efs_access_point.default[volume.key].id
+        }
+      }
+    }
+  }
+
+  dynamic "volume" {
+    for_each = var.ssm_file_system_id != "" ? [1] : []
+
+    volume {
+      name = "efs-${var.ssm_file_system_id}-ssm-user-data"
+
+      efs_volume_configuration {
+        file_system_id     = var.ssm_file_system_id
+        transit_encryption = "ENABLED"
+        authorization_config {
+          access_point_id = aws_efs_access_point.ssm-user-data[0].id
         }
       }
     }
