@@ -92,7 +92,7 @@ resource "aws_ecs_task_definition" "default" {
   dynamic "volume" {
     for_each = var.ssm_file_system_id != "" ? [1] : []
 
-    volume {
+    content {
       name = "efs-${var.ssm_file_system_id}-ssm-user-data"
 
       efs_volume_configuration {
