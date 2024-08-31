@@ -21,6 +21,7 @@ resource "aws_ecs_task_definition" "default" {
       essential  = true
       entryPoint = var.entry_point
       command    = var.command
+      privileged = var.privileged
       portMappings = [
         {
           containerPort = var.container_port
