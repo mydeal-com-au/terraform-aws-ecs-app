@@ -544,7 +544,7 @@ variable "command" {
 
 variable "privileged" {
   type        = bool
-  default     = true
+  default     = false
   description = "Gives the container elevated privileges on the host container instance"
 }
 
