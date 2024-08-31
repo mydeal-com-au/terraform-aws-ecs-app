@@ -542,6 +542,12 @@ variable "command" {
   description = "Command to run on container"
 }
 
+variable "privileged" {
+  type        = bool
+  default     = true
+  description = "Gives the container elevated privileges on the host container instance"
+}
+
 variable "task_role_policies_managed" {
   default     = []
   description = "AWS Managed policies to be added on the task role."
