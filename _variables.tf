@@ -530,6 +530,12 @@ variable "schedule_cron_stop" {
   description = "Cron expression to define when to trigger a stop of the auto-scaling group. E.g. 'cron(00 09 ? * MON-FRI *)' to start at 8am UTC time"
 }
 
+variable "entry_point" {
+  type        = list(string)
+  default     = null
+  description = "Entry point for container (defaults to /bin/sh -c)"
+}
+
 variable "command" {
   type        = list(string)
   default     = null
