@@ -9,15 +9,15 @@ resource "aws_ecs_task_definition" "default" {
   requires_compatibilities = [var.launch_type]
 
   network_mode = var.launch_type == "FARGATE" ? "awsvpc" : var.network_mode
-  cpu          = var.launch_type == "FARGATE" ? var.cpu : null
-  memory       = var.launch_type == "FARGATE" ? var.memory : null
+  cpu          = var.cpu
+  memory       = var.memory
 
   container_definitions = jsonencode(concat([
     {
       name       = var.name
       image      = var.image
-      cpu        = var.cpu
-      memory     = var.memory
+      cpu        = var.launch_type == "FARGATE" ? var.cpu : null
+      memory     = var.launch_type == "FARGATE" ? var.memory : null
       essential  = true
       entryPoint = var.entry_point
       command    = var.command
