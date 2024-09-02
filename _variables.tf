@@ -17,12 +17,22 @@ variable "protocol" {
   description = "Protocol to use (HTTP or HTTPS)"
 }
 
-variable "memory" {
+variable "task_memory" {
   default     = 512
   description = "Hard memory of the container"
 }
 
-variable "cpu" {
+variable "task_cpu" {
+  default     = 0
+  description = "Hard limit for CPU for the container"
+}
+
+variable "container_memory" {
+  default     = 512
+  description = "Hard memory of the container"
+}
+
+variable "container_cpu" {
   default     = 0
   description = "Hard limit for CPU for the container"
 }
