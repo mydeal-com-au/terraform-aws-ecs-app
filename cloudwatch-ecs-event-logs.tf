@@ -9,7 +9,7 @@ resource "aws_cloudwatch_log_group" "ecs_events" {
 
 
 resource "aws_cloudwatch_event_rule" "ecs_events" {
-  count         = var.cloudwatch_logs_create ? 1 : 0
+  count         = var.cloudwatch_logs_create && var.log_ecs_events ? 1 : 0
   name          = "capture-ecs-events-${var.cluster_name}-${var.name}"
   description   = "Capture ecs service events from ${var.cluster_name}-${var.name}"
   event_pattern = <<EOF
@@ -25,13 +25,13 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "ecs_events" {
-  count = var.cloudwatch_logs_create ? 1 : 0
+  count = var.cloudwatch_logs_create && var.log_ecs_events ? 1 : 0
   rule  = aws_cloudwatch_event_rule.ecs_events[0].name
   arn   = aws_cloudwatch_log_group.ecs_events[0].arn
 }
 
 data "aws_iam_policy_document" "ecs_events" {
-  count = var.cloudwatch_logs_create ? 1 : 0
+  count = var.cloudwatch_logs_create && var.log_ecs_events ? 1 : 0
   statement {
     actions = [
       "logs:CreateLogStream",
@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "ecs_events" {
 }
 
 resource "aws_cloudwatch_log_resource_policy" "ecs_events" {
-  count           = var.cloudwatch_logs_create ? 1 : 0
+  count           = var.cloudwatch_logs_create && var.log_ecs_events ? 1 : 0
   policy_document = data.aws_iam_policy_document.ecs_events[0].json
   policy_name     = "capture-ecs-events-${var.cluster_name}-${var.name}"
 }

@@ -287,6 +287,12 @@ variable "cloudwatch_logs_create" {
   description = "Whether to create cloudwatch log resources or not"
 }
 
+variable "log_ecs_events" {
+  default     = false
+  type        = bool
+  description = "Whether to capture ecs task state change events to cloudwatch"
+}
+
 variable "cloudwatch_logs_retention" {
   default     = 120
   description = "Specifies the number of days you want to retain log events in the specified log group. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, and 3653."
