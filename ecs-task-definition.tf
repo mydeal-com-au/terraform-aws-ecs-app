@@ -117,10 +117,4 @@ resource "aws_ecs_task_definition" "default" {
       cpu_architecture        = var.cpu_architecture
     }
   }
-
-  lifecycle {
-    ignore_changes = [
-      container_definitions
-    ]
-  }
 }
