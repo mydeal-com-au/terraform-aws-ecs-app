@@ -59,7 +59,7 @@ resource "aws_ecs_service" "default" {
   }
 
   lifecycle {
-    ignore_changes = [load_balancer, desired_count, capacity_provider_strategy]
+    ignore_changes = [load_balancer, task_definition, desired_count, capacity_provider_strategy]
   }
 
   depends_on = [
